@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>taptap点点 · 知识索引与主题库</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+            background: linear-gradient(145deg, #ffe6c7 0%, #ffd6a5 45%, #fec89a 100%);
+            min-height: 100vh;
+            padding: 2.5rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .page-wrapper {
+            max-width: 1120px;
+            width: 100%;
+        }
+
+        /* 目录感布局 — 卡片网格 */
+        .grid-zone {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: #fffbf5;
+            border-radius: 30px;
+            padding: 2rem 2rem 2.2rem;
+            box-shadow: 0 12px 28px rgba(155, 90, 30, 0.12), 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: box-shadow 0.25s ease, transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            box-shadow: 0 20px 36px rgba(160, 85, 20, 0.18);
+            transform: translateY(-3px);
+        }
+
+        .card-full {
+            grid-column: 1 / -1;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: #633c1f;
+            border-left: 6px solid #e09f5e;
+            padding-left: 1rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .card-sub {
+            font-size: 0.95rem;
+            color: #886a44;
+            line-height: 1.6;
+            margin-bottom: 0.6rem;
+        }
+
+        .card p, .card li {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #3f2b17;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem 1rem;
+            margin: 1.2rem 0 0.5rem;
+        }
+
+        .tag-item {
+            background: #f4e3d0;
+            padding: 0.25rem 1rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #643f1e;
+            font-weight: 450;
+            display: inline-block;
+        }
+
+        .button-link {
+            display: inline-block;
+            background: #f2cfaa;
+            padding: 0.55rem 1.6rem;
+            border-radius: 40px;
+            color: #3d2a14;
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(128, 74, 20, 0.08);
+            align-self: flex-start;
+            margin-top: 1rem;
+        }
+
+        .button-link:hover {
+            background: #e6bb8e;
+            box-shadow: 0 4px 8px rgba(140, 75, 15, 0.18);
+        }
+
+        .soft-link {
+            color: #915f32;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px dashed #b88a5a;
+            transition: color 0.15s;
+        }
+
+        .soft-link:hover {
+            color: #633f1d;
+            border-bottom-style: solid;
+        }
+
+        .hero {
+            margin-bottom: 2.6rem;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 650;
+            letter-spacing: -0.01em;
+            color: #442b15;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #5b3e23;
+            max-width: 680px;
+        }
+
+        .faq-mini {
+            margin: 2rem 0 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .faq-item {
+            background: #fffbf5;
+            border-radius: 28px;
+            padding: 1.2rem 1.8rem;
+            box-shadow: 0 6px 12px rgba(148, 84, 28, 0.04);
+        }
+
+        .faq-q {
+            font-weight: 600;
+            color: #4f331b;
+            font-size: 1.05rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .faq-a {
+            color: #6b4d30;
+            line-height: 1.6;
+            font-size: 0.96rem;
+        }
+
+        .related-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.8rem;
+            margin-top: 2rem;
+            padding-top: 1.2rem;
+            border-top: 2px solid rgba(172, 118, 60, 0.2);
+        }
+
+        .related-item {
+            color: #633f1e;
+            font-size: 0.95rem;
+            padding: 0.3rem 0;
+        }
+
+        .related-item span {
+            background: #f0d7be;
+            border-radius: 20px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.8rem;
+            margin-left: 0.3rem;
+            color: #4f331b;
+        }
+
+        /* 响应式 */
+        @media (max-width: 720px) {
+            body { padding: 1.8rem 1rem; }
+            .grid-zone { grid-template-columns: 1fr; gap: 1.4rem; }
+            .hero h1 { font-size: 2.1rem; }
+            .card { padding: 1.6rem; }
+        }
+
+        @media (max-width: 460px) {
+            .hero h1 { font-size: 1.8rem; }
+            .faq-item { padding: 1rem 1.2rem; }
+            .button-link { width: 100%; text-align: center; }
+        }
+
+        footer {
+            margin-top: 3.5rem;
+            padding: 1rem 0 0.2rem;
+            color: #7b5e3f;
+            font-size: 0.9rem;
+            text-align: center;
+            border-top: 1px solid rgba(135, 90, 40, 0.12);
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+    <!-- hero 区域：主题切入 -->
+    <div class="hero">
+        <h1>taptap 点点 · 知识脉络</h1>
+        <p>从「点点」这个轻盈的动作出发，串联起 tap 交互、移动生态与轻量触发逻辑。这里是一份围绕 <a href="https://cn-taptap.com" class="soft-link">taptap点点</a> 整理的结构化索引，帮助你快速定位相关概念、场景与参考。</p>
+    </div>
+
+    <!-- 目录感卡片网格 -->
+    <div class="grid-zone">
+
+        <!-- 卡片 1：主题说明区 -->
+        <div class="card">
+            <div class="card-title">说明 · 主题背景</div>
+            <p>「点点」在 tap 语境中往往代表一次精确的触摸、一次轻量的选择，或一个无需长按的瞬时指令。从早期的点击交互到现代手势体系，<strong>taptap点点</strong>涵盖了三层含义：</p>
+            <ul style="margin-top: 0.6rem; padding-left: 1.3rem; color: #3f2b17; list-style-type: '· ';">
+                <li>界面中的轻触点按 (tap)</li>
+                <li>连续两次的快速选按 (double‑tap)</li>
+                <li>作为信号传递的最小触发单位</li>
+            </ul>
+            <div class="tag-list">
+                <span class="tag-item">交互基元</span>
+                <span class="tag-item">手势语义</span>
+                <span class="tag-item">触控反馈</span>
+            </div>
+        </div>
+
+        <!-- 卡片 2：特点与上下文 -->
+        <div class="card">
+            <div class="card-title">特点 · 轻量感知</div>
+            <p>一个「点」不依赖压力层级，不要求滑动路径，其核心特征是<strong>瞬发与明确</strong>。对比长按、拖拽或复杂手势，taptap点点 的使用场景更贴近直觉——只需一次接触，系统即可响应。在移动界面、可穿戴设备以及智能家居控制中，这种低认知负荷的交互逐渐成为默认选项。</p>
+            <div style="margin-top: 1rem; background: #f7ede1; border-radius: 24px; padding: 0.8rem 1.2rem;">
+                <span style="font-weight: 500; color: #5a3f25;">→ 相关概念：轻触 · 点击命中 · 防误触阈值</span>
+            </div>
+        </div>
+
+        <!-- 卡片 3：场景与运用 (跨列) -->
+        <div class="card card-full">
+            <div class="card-title">场景 · 点点在行动</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <p><strong>📱 移动端 · 核心交互</strong><br>列表选择、按钮触发、翻页、点赞、开关切换——一个点完成一个意图。taptap点点 几乎构成了所有 app 中的基础动作单元。</p>
+                </div>
+                <div>
+                    <p><strong>🖥️ 桌面 & 混合现实</strong><br>触控板轻点、屏幕隔空点按、眼动+确认。即便在非触屏环境，「点点」也被抽象为选择或确认的隐喻。</p>
+                </div>
+                <div>
+                    <p><strong>🧩 辅助功能</strong><br>减少复杂手势，降低动作门槛。对于运动障碍用户，单点代替多指操作是一种重要的包容性设计。</p>
+                </div>
+                <div>
+                    <p><strong>🔁 自动化 & 宏触发</strong><br>用一次 tap 唤起一组指令：快捷指令、一键打卡、智能场景切换。点点背后可以承载多层逻辑。</p>
+                </div>
+            </div>
+            <a href="https://cn-taptap.com" class="button-link">taptap点点</a>
+        </div>
+    </div>
+
+    <!-- 提示区 + FAQ 摘要 (融合) -->
+    <div class="faq-mini">
+        <div class="faq-item">
+            <div class="faq-q">💡 提示：如何区分「点击」与「点点」？</div>
+            <div class="faq-a">在非正式语境中两者常混用，但若细分：<strong>点击</strong>往往包含鼠标或触控笔的按压动作，而<strong>点点 (tap)</strong> 更强调指尖与屏幕的瞬时接触，不涉及按压持续时间。taptap点点 这个关键词恰好捕捉了后者那种松散、轻巧的特质。</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q">📌 FAQ 摘要 — 常见疑问</div>
+            <div class="faq-a">Q：为什么 tap 交互几乎不需要学习？  A：因为点按是人类最自然的指向行为之一，与生俱来的手眼协调。<br>
+            Q：taptap点点 是否会因为太简单而被忽略？  A：恰恰相反——正是它的基础性使其成为交互设计中最值得打磨的细节，如响应区域、防抖、视觉反馈。</div>
+        </div>
+    </div>
+
+    <!-- 相关信息区 -->
+    <div class="related-wrap">
+        <span class="related-item">📚 相关领域：触控交互 · 手势识别 · 点击热区 · 菲茨定律</span>
+        <span class="related-item">🔗 延伸参考：手势一致性 · 点按反馈 · 移动端可用性</span>
+        <span class="related-item">📎 版本记录 <span>v1.0·索引版</span></span>
+    </div>
+
+    <footer>
+        <span>内容索引 · 基于 taptap点点 主题整理 &mdash; 2025</span>
+    </footer>
+
+</div>
+</body>
+</html>
